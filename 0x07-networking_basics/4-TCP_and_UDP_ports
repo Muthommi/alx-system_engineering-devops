@@ -1,39 +1,7 @@
-#!/bin/env bash
+#!/bin/bash
 
-# Display listening TCP and UDP ports along with associated processes
+# Display listening sockets for TCP and UDP
+netstat -tuln | awk '/^Proto/ {print $0} /^tcp/ || /^udp/ {print $0}' | column -t
 
-# Display header
-echo "Active Internet connections (only servers)"
-echo "Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name"
-
-# Display listening TCP ports
-netstat -tuln | awk '$1 == "tcp" {print $0}' | while read -r line; do
-    # Extract port number and protocol
-    port=$(echo "$line" | awk '{print $4}' | awk -F: '{print $NF}')
-    proto="tcp"
-
-    # Get PID of the process
-    pid=$(lsof -i "$proto:$port" -t)
-
-    # Get process name
-    process_name=$(ps -p $pid -o comm=)
-
-    # Display PID, port, and process name
-    echo "$line       $pid/$process_name"
-done
-
-# Display listening UDP ports
-netstat -uln | awk '$1 == "udp" {print $0}' | while read -r line; do
-    # Extract port number and protocol
-    port=$(echo "$line" | awk '{print $4}' | awk -F: '{print $NF}')
-    proto="udp"
-
-    # Get PID of the process
-    pid=$(lsof -i "$proto:$port" -t)
-
-    # Get process name
-    process_name=$(ps -p $pid -o comm=)
-
-    # Display PID, port, and process name
-    echo "$line       $pid/$process_name"
-done
+# Display active UNIX domain sockets (only servers)
+netstat -lx | awk '/^Active UNIX domain sockets/ {print $0} /^unix/ {print $0}' | column -t
