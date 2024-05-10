@@ -9,7 +9,7 @@
 if [ $# -eq 0 ]; then
 	echo "Usage: 5-is_the_host_on_the_network {IP_ADDRESS}"
 	exit
-elif [ $# -gt 1]; then 
+elif [ $# -gt 1 ]; then 
 	echo "Usage: 5-is_the_host_on_the_network {IP_ADDRESS}"
 	exit
 else
