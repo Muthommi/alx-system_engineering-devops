@@ -1,26 +1,39 @@
 #!/bin/env bash
 
-# Display listening ports and associated processes
-
-# Get listening ports
-listening_ports=$(netstat -tuln | grep 'LISTEN')
+# Display listening TCP and UDP ports along with associated processes
 
 # Display header
-echo "Listening Ports:"
-echo "PID   Port   Process"
+echo "Active Internet connections (only servers)"
+echo "Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name"
 
-# Loop through each listening port
-while read -r line; do
+# Display listening TCP ports
+netstat -tuln | awk '$1 == "tcp" {print $0}' | while read -r line; do
     # Extract port number and protocol
     port=$(echo "$line" | awk '{print $4}' | awk -F: '{print $NF}')
-    proto=$(echo "$line" | awk '{print $1}')
+    proto="tcp"
 
     # Get PID of the process
-    pid=$(lsof -i "$proto:$port" | awk 'NR==2{print $2}')
+    pid=$(lsof -i "$proto:$port" -t)
 
     # Get process name
     process_name=$(ps -p $pid -o comm=)
 
     # Display PID, port, and process name
-    echo "$pid    $port    $process_name"
-done <<< "$listening_ports"
+    echo "$line       $pid/$process_name"
+done
+
+# Display listening UDP ports
+netstat -uln | awk '$1 == "udp" {print $0}' | while read -r line; do
+    # Extract port number and protocol
+    port=$(echo "$line" | awk '{print $4}' | awk -F: '{print $NF}')
+    proto="udp"
+
+    # Get PID of the process
+    pid=$(lsof -i "$proto:$port" -t)
+
+    # Get process name
+    process_name=$(ps -p $pid -o comm=)
+
+    # Display PID, port, and process name
+    echo "$line       $pid/$process_name"
+done
