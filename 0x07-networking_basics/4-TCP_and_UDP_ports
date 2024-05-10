@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/env bash
 
-# A script that displays listening ports
-netstat -lntup
+# Display listening sockets with PID and program name
+sudo netstat -tunlp | grep 'LISTEN'
