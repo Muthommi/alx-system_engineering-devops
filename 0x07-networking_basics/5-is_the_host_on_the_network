@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
 # Script that pings an IP address passed as an argument
+# Requirements:
 # Accepts a string as an argument
 # Pings the IP five times
 # Displays Usage: 5-is_the_host_on_the_network {IP_ADDRESS}
