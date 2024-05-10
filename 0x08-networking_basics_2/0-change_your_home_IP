@@ -1,23 +1,12 @@
 #!/usr/bin/env bash
 
 # A script that configures resolves IP addresses
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
-   exit 1
-fi
+# Requirements:
+# Localhost resolves to 127.0.0.2
+# facebook.com resolves to 8.8.8.8
+# The checker is running on Docker
 
-update_hosts_file() {
-    host=$1
-    ip_address=$2
-    if grep -q "$host" /etc/hosts; then
-        sed -i "s/.*$host.*/$ip_address $host/" /etc/hosts
-    else
-        echo "$ip_address $host" >> /etc/hosts
-    fi
-}
-
-update_hosts_file "localhost" "127.0.0.2"
-
-update_hosts_file "facebook.com" "8.8.8.8"
-
-echo "Configuration completed."
+cp /etc/hosts ~/hosts.new
+echo "127.0.0.2 localhost" > -/hosts.new
+echo "8.8.8.8 facebook.com" > ~/hosts.new
+cp -f -/hosts.new /etc/hosts
