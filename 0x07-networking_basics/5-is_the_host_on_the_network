@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 
-# Function to display usage
-display_usage() {
-    echo "Usage: $0 {IP_ADDRESS}"
-}
+# Script that pings an IP address passed as an argument
+# Accepts a string as an argument
+# Pings the IP five times
+# Displays Usage: 5-is_the_host_on_the_network {IP_ADDRESS}
+# If no argument is passed
 
-# Check if argument is provided
-if [ $# -ne 1 ]; then
-    display_usage
-    exit 1
+if [ $# -eq 0 ]; then
+	echo "Usage: 5-is_the_host_on_the_network {IP_ADDRESS}"
+	exit
+elif [ $# -gt 1]; then 
+	echo "Usage: 5-is_the_host_on_the_network {IP_ADDRESS}"
+	exit
+else
+	ping "$1" -c 5
 fi
-
-# Ping the IP address 5 times
-ping -c 5 $1
