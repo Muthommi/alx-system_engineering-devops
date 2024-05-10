@@ -1,10 +1,15 @@
 #!/bin/env bash
 
-# A script that pings an IP address passed as an argument
-if [ "$#" -ne 1 ]; then
+# Function to display usage
+display_usage() {
     echo "Usage: $0 {IP_ADDRESS}"
+}
+
+# Check if argument is provided
+if [ $# -ne 1 ]; then
+    display_usage
     exit 1
 fi
 
-ping -c 5 "$1"
-
+# Ping the IP address 5 times
+ping -c 5 $1
