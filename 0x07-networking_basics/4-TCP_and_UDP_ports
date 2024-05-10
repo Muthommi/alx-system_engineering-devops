@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 
 # Display listening sockets for TCP and UDP
 netstat -tuln | awk '/^Proto/ {print $0} /^tcp/ || /^udp/ {print $0}' | column -t
