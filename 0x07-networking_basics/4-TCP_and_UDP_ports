@@ -1,4 +1,26 @@
 #!/bin/env bash
 
-# Display listening sockets with PID and program name
-sudo netstat -tunlp | grep 'LISTEN'
+# Display listening ports and associated processes
+
+# Get listening ports
+listening_ports=$(netstat -tuln | grep 'LISTEN')
+
+# Display header
+echo "Listening Ports:"
+echo "PID   Port   Process"
+
+# Loop through each listening port
+while read -r line; do
+    # Extract port number and protocol
+    port=$(echo "$line" | awk '{print $4}' | awk -F: '{print $NF}')
+    proto=$(echo "$line" | awk '{print $1}')
+
+    # Get PID of the process
+    pid=$(lsof -i "$proto:$port" | awk 'NR==2{print $2}')
+
+    # Get process name
+    process_name=$(ps -p $pid -o comm=)
+
+    # Display PID, port, and process name
+    echo "$pid    $port    $process_name"
+done <<< "$listening_ports"
