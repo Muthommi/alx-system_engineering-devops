@@ -1,7 +1,6 @@
-#!/bin/env bash
+#!/usr/bin/env bash
+# A bash script that displays listening ports
+# Shows only listening sockets
+# Shows the PID and the name of the program to which the socket belongs
 
-# Display listening sockets for TCP and UDP
-netstat -tuln | awk '/^Proto/ {print $0} /^tcp/ || /^udp/ {print $0}' | column -t
-
-# Display active UNIX domain sockets (only servers)
-netstat -lx | awk '/^Active UNIX domain sockets/ {print $0} /^unix/ {print $0}' | column -t
+netstat -l -p
