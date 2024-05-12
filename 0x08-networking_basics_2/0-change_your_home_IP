@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # A script that configures resolves IP addresses
 # Requirements:
 # Localhost resolves to 127.0.0.2
