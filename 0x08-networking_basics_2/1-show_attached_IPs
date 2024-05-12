@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
+# A bash script that dispays the active IP adresses on my machine
 
-#A bash script that dispays the active IP adresses on my machine
-active_ips=$(hostname -I | awk '{print $1}')
-
-echo "Active IPv4 IPs on this machine are:"
-echo $active_ips
+ifconfig -a | grep "inet addr" | cut -d " " -f12 | cut -d ":" -f2
