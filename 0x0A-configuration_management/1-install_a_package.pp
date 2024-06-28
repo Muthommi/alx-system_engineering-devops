@@ -1,11 +1,11 @@
 # This puppet manifest installs flask from pip3.
-package {'Flask':
+package {'flask':
   ensure   => '2.1.0',
   provider => 'pip3'
 }
 
-package {'Werkzeug':
+package {'werkzeug':
   ensure => '2.0.3',
   provider => 'pip3',
-  require => Package['Flask'],
+  require => Package['flask'],
 }
