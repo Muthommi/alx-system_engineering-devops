@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# This script installs Nginx, configutrs it to serve "Hello World" and
-# Restarts Nginx without using systemct1
+# This script installs Nginx, configures it to serve "Hello World"
 
 apt-get update -y
 apt-get install nginx -y
