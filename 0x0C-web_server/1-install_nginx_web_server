@@ -3,17 +3,13 @@
 
 set -e
 
-sudo apt-get update -y
+sudo apt-get update -y -qq
 sudo apt-get install nginx -y
 
 sudo ufw allow 'Nginx HTTP'
 
 echo "Hello World!" | sudo tee /var/www/html/index.html
 
-if sudo service nginx status > /dev/null 2>&1; then
-    sudo service nginx restart
-else
-    sudo service nginx start
-fi
+sudo service nginx start
 
 echo "Nginx installed and configured successfully. Visit http://localhost to see the 'Hello World!' message."
