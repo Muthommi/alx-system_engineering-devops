@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # This script installs Nginx, configures it to serve "Hello World!" at its root, and restarts Nginx without using systemctl.
 
-apt-get update -y
-apt-get install nginx -y
+sudo apt-get update -y
+sudo apt-get install nginx -y
 
 echo "Hello World!" > /var/www/html/index.html
 
-service nginx start
+sudo service nginx start
 
-service nginx restart
+sudo service nginx restart
 
 echo "Nginx installed and configured successfully. Visit http://localhost to see the 'Hello World!' message."
