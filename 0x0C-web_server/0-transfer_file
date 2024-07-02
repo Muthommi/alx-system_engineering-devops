@@ -11,10 +11,8 @@ IP=$2
 USERNAME=$3
 PATH_TO_SSH_KEY=$4
 
-scp -i "PATH_TO_SSH_KEY" -o StrictHostKeyChecking=no "PATH_TO_FILE" "USERNAME@$IP:~/"
-
-if [ "$?" -eq 0 ]; then
-  echo "File transferred successfully."
+if scp -i "$PATH_TO_SSH_KEY" -o StrictHostKeyChecking=no "$PATH_TO_FILE" "$USERNAME@$IP:~/"; then
+	echo "File transferred successfully."
 else
-  echo "File transfer failed."
+	echo "File transfer failed."
 fi
