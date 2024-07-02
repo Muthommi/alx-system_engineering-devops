@@ -4,19 +4,19 @@
 
 set -e
 
-sudo apt-get update -y -qq
+sudo apt-get update -y 
 sudo apt-get install nginx -y
 
 echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
 
 if pgrep -x "nginx" >/dev/null; then
-	sudo pkill nginx
+    sudo pkill nginx
 fi
 sudo /usr/sbin/nginx
 
 if ! pgrep -x "nginx" >/dev/null; then
-	echo "Nginx failed to start."
-	exit 1
+    echo "Nginx failed to start."
+    exit 1
 fi
 
 echo "Nginx installed and configured successfully. Visit http://localhost to see the 'Hello World!' message."
