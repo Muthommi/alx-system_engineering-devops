@@ -4,7 +4,7 @@
 
 set -e
 
-sudo apt-get update -y 
+sudo apt-get update -y -qq 
 sudo apt-get install nginx -y
 
 echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
