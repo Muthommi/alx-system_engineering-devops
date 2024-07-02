@@ -3,7 +3,7 @@
 
 set -e
 
-sudo apt-get update -y -qq
+sudo apt-get update -y 
 sudo apt-get install nginx -y
 
 sudo ufw allow 'Nginx HTTP'
