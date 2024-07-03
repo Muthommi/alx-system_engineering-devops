@@ -1,7 +1,4 @@
-#!/bin/bash
-
-# A script to connect to server using SSH with specified requirements
-
-server_ip="8.8.8.8"
+#!/usr/bin/env bash
+# This script connects to a remote server using SSH with a private key.
 
 ssh -i ~/.ssh/school ubuntu@172.17.0.8
