@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# A script to connect to server using SSH with specified requirements
+
+server_ip="8.8.8.8"
+
+ssh -i ~/.ssh/school ubuntu@172.17.0.8
