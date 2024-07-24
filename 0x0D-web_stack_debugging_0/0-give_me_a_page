@@ -1,27 +1,14 @@
-# Pull the Ubuntu Docker image and run the container
-docker run -d -ti ubuntu:16.04
+#!/usr/bin/env bash
+# This script installs and configures Apache
 
-# Get the container ID
-docker ps
-
-# Access the container
-docker exec -ti /bin/bash
-
-# Update the package list and install Apache
+# Update package lists
 apt-get update
+
+# Install Apache
 apt-get install -y apache2
 
-# create the index.html file with "Hello Holberton"
-echo "Hello Holberton" > /var/www/html/index.html
-
-# Start the Apache device
+# Start Apache service
 service apache2 start
 
-# Exit the container
-exit
-
-# Run the container with port mapping
-docker run -p 8080:80 -d -it 
-
-# Test if the container is returning "Hello Holberton"
-curl 0:8080
+# Create "Hello Holberton" page
+echo "Hello Holberton" > /var/www/html/index.html
