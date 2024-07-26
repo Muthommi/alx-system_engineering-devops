@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# This script configures Nginx to run as the nginx user and listen on port 8080
+
+NGINX_CONF="/etc/nginx/sites-available/default"
+
+cp "$NGINX_CONF" "$NGINX_CONF.bak"
+
+sed -i 's/listen 80;/listen 8080;/g' "$NGINX_CONF"
+
+NGINX_MAIN_CONF="/etc/nginx/nginx.conf"
+
+cp "$NGINX_MAIN_CONF" "$NGINX_MAIN_CONF.bak"
+
+sed -i 's/user www-data;/user nginx;/g' "$NGINX_MAIN_CONF"
+
+systemctl restart nginx
+
+pgrep -af nginx
