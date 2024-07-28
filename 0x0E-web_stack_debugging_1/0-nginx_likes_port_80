@@ -2,40 +2,39 @@
 # This script configures Nginx to listen to port 80
 
 if [ "$EUID" -ne 0 ]; then
-	echo "Please run as root"
-	exit 1
+    echo "Please run as root"
+    exit 1
 fi
 
 if ! command -v apt-get &> /dev/null; then
-	echo "apt-get not found. Make sure you are using ubuntu system."
-	exit 1
+    echo "apt-get not found. Make sure you are using an Ubuntu system."
+    exit 1
 fi
 
 if ! dpkg -l | grep -qw nginx; then
-	apt-get update && apt-get install -y nginx
+    apt-get update && apt-get install -y nginx
 fi
 
 NGINX_CONF="/etc/nginx/sites-available/default"
 if [ ! -f "$NGINX_CONF" ]; then
-	echo "Nginx configuration file not found: $NGINX_CONF"
-	exit 1
+    echo "Nginx configuration file not found: $NGINX_CONF"
+    exit 1
 fi
 
 sed -i 's/listen 80 default_server;/listen 0.0.0.0:80 default_server;/g' "$NGINX_CONF"
 sed -i 's/listen \[::\]:80 default_server;/# listen \[::\]:80 default_server;/g' "$NGINX_CONF"
 
 if ! command -v systemctl &> /dev/null; then
-	echo "systemct1 not found. Make sure you are using a system with systemd"
-	exit 1
+    echo "systemctl not found. Make sure you are using a system with systemd"
+    exit 1
 fi
 
 systemctl restart nginx
-
 systemctl enable nginx
 
 if command -v ufw &> /dev/null; then
-	ufw allow 80/tcp
-	ufw reload
+    ufw allow 80/tcp
+    ufw reload
 fi
 
 echo "Nginx has been configured to listen on port 80 of all active IPv4 IPs."

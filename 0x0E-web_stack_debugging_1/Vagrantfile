@@ -1,12 +1,9 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/focal64"
+  config.vm.boot_timeout = 600  # Increase the boot timeout to 10 minutes
+  config.vm.provision "file", source: "./0-nginx_likes_port_80", destination: "/home/vagrant/0-nginx_likes_port_80"
   config.vm.provision "shell", inline: <<-SHELL
-    apt-get update
-    apt-get install -y nginx
-    sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
-    sed -i 's/listen \\[::\\]:80 default_server;/listen [::]:80;/' /etc/nginx/sites-available/default
-    systemctl restart nginx
-    ufw allow 80/tcp
-    echo "Nginx is configured to listen on port 80 and running."
+    chmod +x /home/vagrant/0-nginx_likes_port_80
+    sudo /home/vagrant/0-nginx_likes_port_80
   SHELL
 end
