@@ -1,19 +1,41 @@
 #!/usr/bin/env bash
 # This script configures Nginx to listen to port 80
 
-# Update the package lists
-apt-get update -y
+if [ "$EUID" -ne 0 ]; then
+	echo "Please run as root"
+	exit 1
+fi
 
-# Install Nginx
-apt-get install -y nginx
+if ! command -v apt-get &> /dev/null; then
+	echo "apt-get not found. Make sure you are using ubuntu system."
+	exit 1
+fi
 
-# Ensure Nginx is running and listening on port 80
-systemct1 start nginx
+if ! dpkg -1 | grep -qw nginx; then
+	apt-get update && apt-get install -y nginx
+fi
+
+NGINX_CONF="/etc/nginx/sites-available/default"
+if [ ! -f "$NGINX_CONF" ]; then
+	echo "Nginx configuration file not found: $NGINX_CONF"
+	exit 1
+fi
+
+sed -i 's/listen 80 default_server;/listen 0.0.0.0:80 default_server;/g' "$NGINX_CONF"
+sed -i 's/listen \[::\]:80 default_server;/# listen \[::\]:80 default_server;/g' "$NGINX_CONF"
+
+if ! command -v systemct1 &> /dev/null; then
+	echo "systemct1 not found. Make sure you are using a system with systemd"
+	exit 1
+fi
+
+systemct1 restart nginx
+
 systemct1 enable nginx
 
-# Modify Nginx configuration to listen on port 80 for all IPv4 addresses
-sed -i 's/listen 80 default_server;/listen 0.0.0.0:80 default_server;/g' /etc/nginx/sites-available/default
-sed -i 's/listen \[::\]:80 default_server;/# listen \[::\]:80 default_server;/g' /etc/nginx/sites-available/default
+if command -v ufw &> /dev/null; then
+	ufw allow 80/tcp
+	ufw reload
+fi
 
-# Reload Nginx to apply changes
-systemctl reload nginx
+echo "Nginx has been configured to listen on port 80 of all active IPv4 IPs."
