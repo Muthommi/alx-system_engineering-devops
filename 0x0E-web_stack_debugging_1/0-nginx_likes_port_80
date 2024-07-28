@@ -11,7 +11,7 @@ if ! command -v apt-get &> /dev/null; then
 	exit 1
 fi
 
-if ! dpkg -1 | grep -qw nginx; then
+if ! dpkg -l | grep -qw nginx; then
 	apt-get update && apt-get install -y nginx
 fi
 
@@ -24,14 +24,14 @@ fi
 sed -i 's/listen 80 default_server;/listen 0.0.0.0:80 default_server;/g' "$NGINX_CONF"
 sed -i 's/listen \[::\]:80 default_server;/# listen \[::\]:80 default_server;/g' "$NGINX_CONF"
 
-if ! command -v systemct1 &> /dev/null; then
+if ! command -v systemctl &> /dev/null; then
 	echo "systemct1 not found. Make sure you are using a system with systemd"
 	exit 1
 fi
 
-systemct1 restart nginx
+systemctl restart nginx
 
-systemct1 enable nginx
+systemctl enable nginx
 
 if command -v ufw &> /dev/null; then
 	ufw allow 80/tcp
