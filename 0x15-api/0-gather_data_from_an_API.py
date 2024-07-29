@@ -10,9 +10,8 @@ import sys
 
 def fetch_employee_todo_progress(employee_id):
     """
-    Fetches and prints the TODO list progress of an employee.
+    Fetches and prints the TODO list progress of an employee
     """
-
     user_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}'
     todos_url = (
             f'https://jsonplaceholder.typicode.com/users/{employee_id}/todos'
@@ -34,9 +33,10 @@ def fetch_employee_todo_progress(employee_id):
     num_done_tasks = len(done_tasks)
 
     print(
-        f"Employee {employee_name} is done with tasks("
-        f"{num_done_tasks}/{total_tasks}):"
+            f"Employee {employee_name} is done with tasks("
+            f"{num_done_tasks}/{total_tasks}):"
     )
+
     for task in done_tasks:
         print(f"\t {task.get('title')}")
 
