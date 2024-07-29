@@ -24,6 +24,7 @@ def fetch_employee_todo_progress(employee_id):
     if user_response.status_code != 200:
         print("User not found")
         return
+
     user_data = user_response.json()
     todos_data = todos_response.json()
 
