@@ -9,6 +9,9 @@ import sys
 
 
 def fetch_employee_todo_progress(employee_id):
+    """
+    Fetches and prints the TODO list progress of an employee.
+    """
 
     user_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}'
     todos_url = (
