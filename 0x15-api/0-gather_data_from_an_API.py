@@ -4,28 +4,28 @@ This module fetches and displays TODO list progress for a given employee ID
 using the JSONPlaceholder API.
 """
 
-import requests
+import json
 import sys
+import urllib.request
 
 
 def fetch_employee_todo_progress(employee_id):
     """
-    Fetches and prints the TODO list progress of an employee
+    Fetches and prints the TODO list progress of an employee.
     """
     user_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}'
     todos_url = (
-            f'https://jsonplaceholder.typicode.com/users/{employee_id}/todos'
+        f'https://jsonplaceholder.typicode.com/users/{employee_id}/todos'
     )
 
-    user_response = requests.get(user_url)
-    todos_response = requests.get(todos_url)
-
-    if user_response.status_code != 200:
+    try:
+        with urllib.request.urlopen(user_url) as response:
+            user_data = json.load(response)
+        with urllib.request.urlopen(todos_url) as response:
+            todos_data = json.load(response)
+    except urllib.error.HTTPError:
         print("User not found")
         return
-
-    user_data = user_response.json()
-    todos_data = todos_response.json()
 
     employee_name = user_data.get('name')
     total_tasks = len(todos_data)
@@ -33,10 +33,9 @@ def fetch_employee_todo_progress(employee_id):
     num_done_tasks = len(done_tasks)
 
     print(
-            f"Employee {employee_name} is done with tasks("
-            f"{num_done_tasks}/{total_tasks}):"
+        f"Employee {employee_name} is done with tasks("
+        f"{num_done_tasks}/{total_tasks}):"
     )
-
     for task in done_tasks:
         print(f"\t {task.get('title')}")
 
