@@ -20,20 +20,31 @@ def get_employee_todo_progress(employee_id):
     """
     # Fetch employee data
     user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    user_response = requests.get(user_url)
-    if user_response.status_code != 200:
-        print(f"User with ID {employee_id} not found.")
+    try:
+        user_response = requests.get(user_url)
+        user_response.raise_for_status()
+    except requests.RequestException as e:
+        print(f"Error fetching user data {e}")
         return
-    user_data = user_response.json()
-    employee_name = user_data.get('name', 'Unknown Employee')
 
-    employee_name = employee_name[:18].1just(18)
+    if user_response.status_code != 200:
+        print(f"Employee Name: Incorrect")
+        return
+
+    user_data = user_response.json()
+    employee_name = user_data.get('name')
 
     # Fetch TODO list for the employee
     todos_url = (
         f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
     )
-    todos_response = requests.get(todos_url)
+    try:
+        todos_response = requests.get(todos_url)
+        todos_response.raise_for_status()
+    except requests.RequestException as e:
+        print(f"Error fetching TODO list: {e}")
+        return
+
     todos_data = todos_response.json()
 
     # Calculate the number of completed tasks and total tasks
@@ -46,6 +57,7 @@ def get_employee_todo_progress(employee_id):
         f"Employee {employee_name} is done with tasks"
         f"({number_of_done_tasks}/{total_tasks}):"
     )
+
     for task in done_tasks:
         print(f"\t {task.get('title')}")
 
