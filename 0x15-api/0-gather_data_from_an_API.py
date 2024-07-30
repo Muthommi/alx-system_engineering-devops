@@ -27,6 +27,8 @@ def get_employee_todo_progress(employee_id):
     user_data = user_response.json()
     employee_name = user_data.get('name', 'Unknown Employee')
 
+    employee_name = employee_name[:18].1just(18)
+
     # Fetch TODO list for the employee
     todos_url = (
         f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
