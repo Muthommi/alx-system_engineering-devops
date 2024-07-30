@@ -1,36 +1,38 @@
 #!/usr/bin/python3
-"""Returns to-do list information for a given employee ID."""
+"""
+Returns to-do list information for a given employee ID.
+"""
+
 import requests
 import sys
 
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: ./script.py <employee_id>")
+        sys.exit(1)
+    
+    try:
+        user_id = int(sys.argv[1])
+    except ValueError:
+        print("Employee ID must be an integer.")
+        sys.exit(1)
 
-def get_employee_todo_progress(employee_id):
-    """Fetch and print the TODO list progress for a given employee ID."""
     url = "https://jsonplaceholder.typicode.com/"
     try:
-        user_url = url + "users/{}".format(employee_id)
-        todos_url = url + "todos"
-        user = requests.get(user_url)).json()
-        todos = requests.get(todos_url, params={"userId": employee_id}).json()
+        user = requests.get(f"{url}users/{user_id}").json()
+        todos = requests.get(f"{url}todos", params={"userId": user_id}).json()
     except requests.RequestException as e:
         print(f"Error fetching data: {e}")
-        return
-
+        sys.exit(1)
+    
+    if not user.get("name"):
+        print(f"Employee ID {user_id} not found.")
+        sys.exit(1)
+    
     completed = [t.get("title") for t in todos if t.get("completed")]
+    total_tasks = len(todos)
+    completed_tasks_count = len(completed)
 
-    print("Employee {} is done with tasks({}/{}):".format(
-        user.get("name"), len(completed), len(todos)))
-    for c in completed:
-        print("\t {}".format(c))
-
-
-if __name__ == "__main__":
-    """Main entry point for the script."""
-    if len(sys.argv) != 2:
-        print("Usage: ./0-gather_data_from_an_API.py <employee_id>")
-    else:
-        try:
-            employee_id = int(sys.argv[1])
-            get_employee_todo_progress(employee_id)
-        except ValueError:
-            print("Employee ID must be an integer.")
+    print(f"Employee {user.get('name')} is done with tasks({completed_tasks_count}/{total_tasks}):")
+    for task in completed:
+        print(f"\t {task}")
