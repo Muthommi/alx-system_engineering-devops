@@ -7,25 +7,13 @@ import requests
 import sys
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: {} <employee_id>".format(sys.argv[0]))
-        sys.exit
-
-    try:
-        employee_id = int(sys.argv[1])
-    except ValueError:
-        print("Employee ID must be an integer.")
-        sys.exit
+    employee_id = int(sys.argv[1])
 
     base_url = "https://jsonplaceholder.typicode.com"
 
     user_url = "{}/users/{}".format(base_url, employee_id)
     user_response = requests.get(user_url)
     user_data = user_response.json()
-
-    if not user_data:
-        print("Employee ID not found.")
-        sys.exit(1)
 
     employee_name = user_data.get('name')
 
