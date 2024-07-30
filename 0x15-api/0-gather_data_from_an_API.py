@@ -1,74 +1,27 @@
 #!/usr/bin/python3
-"""
-This module fetches and displays TODO list progress for a given employee ID
-using the JSONPlaceholder API.
-"""
-
+"""Returns to-do list information for a given employee ID."""
 import requests
 import sys
 
-
 def get_employee_todo_progress(employee_id):
-    """
-    Fetch and display the TODO list progress for a given employee ID.
-
-    Args:
-        employee_id (int): The ID of the employee.
-
-    Prints:
-        The employee's TODO list progress in the specified format.
-    """
-    # Fetch employee data
-    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    """Fetch and print the TODO list progress for a given employee ID."""
+    url = "https://jsonplaceholder.typicode.com/"
     try:
-        user_response = requests.get(user_url)
-        user_response.raise_for_status()
+        user = requests.get(url + "users/{}".format(employee_id)).json()
+        todos = requests.get(url + "todos", params={"userId": employee_id}).json()
     except requests.RequestException as e:
-        print(f"Error fetching user data {e}")
+        print(f"Error fetching data: {e}")
         return
-
-    if user_response.status_code != 200:
-        print(f"Employee Name: Incorrect")
-        return
-
-    user_data = user_response.json()
-    employee_name = user_data.get('name')
-
-    # Fetch TODO list for the employee
-    todos_url = (
-        f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
-    )
-    try:
-        todos_response = requests.get(todos_url)
-        todos_response.raise_for_status()
-    except requests.RequestException as e:
-        print(f"Error fetching TODO list: {e}")
-        return
-
-    todos_data = todos_response.json()
-
-    # Calculate the number of completed tasks and total tasks
-    total_tasks = len(todos_data)
-    done_tasks = [task for task in todos_data if task.get('completed')]
-    number_of_done_tasks = len(done_tasks)
-
-    # Print the employee TODO list progress
-    print(
-        f"Employee {employee_name} is done with tasks"
-        f"({number_of_done_tasks}/{total_tasks}):"
-    )
-
-    for task in done_tasks:
-        print(f"\t {task.get('title')}")
-
+    
+    completed = [t.get("title") for t in todos if t.get("completed")]
+    
+    print("Employee {} is done with tasks({}/{}):".format(
+        user.get("name"), len(completed), len(todos)))
+    for c in completed:
+        print("\t {}".format(c))
 
 if __name__ == "__main__":
-    """
-    Main entry point for the script.
-
-    Validates command-line arguments and calls the get_employee_todo_progress
-    function.
-    """
+    """Main entry point for the script."""
     if len(sys.argv) != 2:
         print("Usage: ./0-gather_data_from_an_API.py <employee_id>")
     else:
