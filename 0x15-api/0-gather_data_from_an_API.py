@@ -52,7 +52,7 @@ if __name__ == "__main__":
     """
     Main entry point for the script.
 
-    Validates command-line arguments and calls the get_employee_todo_progress 
+    Validates command-line arguments and calls the get_employee_todo_progress
     function.
     """
     if len(sys.argv) != 2:
