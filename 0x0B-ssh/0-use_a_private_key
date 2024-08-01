@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-<<<<<<< HEAD
-# This script connects to my server using a private key
-=======
-# This script connects to a remote server using SSH with a private key.
->>>>>>> eb84d785ef3cc46842d5412d91286a005058a227
+# This script connects to a server using SSH with a private key
 
-ssh -i ~/.ssh/school ubuntu@172.17.0.8
+ssh -i ~/.ssh/school muthomi@172.31.186.139
