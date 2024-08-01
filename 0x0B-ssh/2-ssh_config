@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-# This script configures my SSh so as not to use password
-
-Host 172.17.0.8
-    IdentityFile ~/.ssh/school
-    PasswordAuthentication no
