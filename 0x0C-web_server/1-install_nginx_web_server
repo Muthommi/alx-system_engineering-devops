@@ -1,25 +1,15 @@
 #!/usr/bin/env bash
-# This script installs Nginx, configures it to serve "Hello World!"
-# and starts Nginx without systemct1
+# This script installs and configures Nginx
 
-echo -e "Updating and installing Nginx.\n"
-sudo apt-get update -y -qq && \
-	sudo apt-get install nginx -y
+# Update package list and install Nginx
+sudo apt-get update
+sudo apt-get install -y nginx
 
-echo -e "\nSetting up Nginx.\n"
+# Allow Nginx through the firewall
+sudo ufw allow 'Nginx HTTP'
 
-if sudo service nginx status > /dev/null 2>&1; then
-    sudo service nginx restart
-else
-    sudo service nginx start
-fi
+# Create a custom index.html
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
-sudo ufw allow "Nginx HTTP"
-
-sudo chown -R "$USER":"$USER" /var/www/html
-sudo chmod -R 755 /var/www
-
-cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
-echo -e "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html > /dev/null
-
-echo "Nginx installed and configured successfully. Visit http://localhost to see the 'Hello World!' message."
+# Restart Nginx without using systemctl
+sudo service nginx restart
