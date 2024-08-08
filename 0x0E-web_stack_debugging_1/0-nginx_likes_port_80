@@ -22,8 +22,8 @@ if [ ! -f "$NGINX_CONF" ]; then
     exit 1
 fi
 
-sed -i 's/listen 80 default_server;/listen 0.0.0.0:80 default_server;/g' "$NGINX_CONF"
-sed -i 's/listen \[::\]:80 default_server;/# listen \[::\]:80 default_server;/g' "$NGINX_CONF"
+sed -i 's/listen [::] 80 default_server;/listen 80 default_server;/g' "$NGINX_CONF"
+sed -i 's/listen \[::\]:80 default_server;/listen [::]:80 default_server;/g' "$NGINX_CONF"
 
 if ! command -v systemctl &> /dev/null; then
     echo "systemctl not found. Make sure you are using a system with systemd"
@@ -38,4 +38,9 @@ if command -v ufw &> /dev/null; then
     ufw reload
 fi
 
-echo "Nginx has been configured to listen on port 80 of all active IPv4 IPs."
+if curl -sI http://0:80 | grep -q "200 ok"; then
+    echo "Nginx has been configured to listen on port 80 of all active IPv4 IPs."
+else
+    echo "Failed to configure Nginx correctly."
+    exit 1
+fi
