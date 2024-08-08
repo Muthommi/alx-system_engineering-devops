@@ -16,6 +16,7 @@ if ! dpkg -l | grep -qw nginx; then
 fi
 
 NGINX_CONF="/etc/nginx/sites-available/default"
+
 if [ ! -f "$NGINX_CONF" ]; then
     echo "Nginx configuration file not found: $NGINX_CONF"
     exit 1
