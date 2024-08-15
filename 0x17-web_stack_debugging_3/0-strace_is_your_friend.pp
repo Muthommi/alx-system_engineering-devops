@@ -19,7 +19,7 @@ file { '/etc/apache2/apache2.conf':
   mode    => '0644',
   owner   => 'root',
   group   => 'root',
-  content => 'template('apache/apache2.conf.erb'),
+  content => template('apache/apache2.conf.erb'),
   notify  => Service['apache2'],
 }
 
