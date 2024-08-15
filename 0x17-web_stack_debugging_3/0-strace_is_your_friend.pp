@@ -19,7 +19,7 @@ file { '/etc/apache2/apache2.conf':
   mode    => '0644',
   owner   => 'root',
   group   => 'root',
-  source  => 'puppet://modules/apache/apache2.conf',
+  content => template('apache/apache2.conf.erb'),
   notify  => Service['apache2'],
 }
 
