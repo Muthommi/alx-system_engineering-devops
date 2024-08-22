@@ -13,6 +13,6 @@ exec { 'reload-nginx':
 
 service { 'nginx':
   ensure  => running,
-  enable  => true
+  enable  => true,
   require => File['/etc/nginx/nginx.conf'],
 }
