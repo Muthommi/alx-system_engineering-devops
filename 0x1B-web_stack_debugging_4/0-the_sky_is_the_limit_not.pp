@@ -10,3 +10,9 @@ exec { 'reload-nginx':
   command     => 'service nginx reload',
   refreshonly => true,
 }
+
+service { 'nginx':
+  ensure  => running,
+  enable  => true
+  require => File['/etc/nginx/nginx.conf'],
+}
