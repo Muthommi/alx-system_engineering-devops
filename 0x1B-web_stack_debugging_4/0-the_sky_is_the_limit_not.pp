@@ -2,8 +2,8 @@
 
 file { '/etc/nginx/nginx.conf':
   ensure  => file,
-  content => template('nginx/nginx.conf,erb'),
-  notify  => Exec['reload=nginx'],
+  content => template('nginx/nginx.conf.erb'),
+  notify  => Exec['reload-nginx'],
 }
 
 exec { 'reload-nginx':
