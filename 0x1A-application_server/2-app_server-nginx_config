@@ -1,8 +1,10 @@
 # Configuration to serve the AirBnB cline page from /airbnb-onepage/
 
 server {
-    listen 80;
-    server_name _;
+    listen 80 default server;
+    listen [::]:80 default_server;
+
+    server name 54.146.95.118;
 
     location /airbnb-onepage/ {
         proxy_pass http://127.0.0.1:5000
